@@ -1,0 +1,101 @@
+﻿@model IEnumerable<WebApplication2.Models.Pizza>
+
+@{
+    ViewData["Title"] = "Pizzas";
+}
+
+<h1>Pizzas</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PizzaName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BasePrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TomatoSauce)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cheese)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Peperoni)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mushroom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tuna)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pineapple)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ham)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Beef)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FinalPrice)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImageTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PizzaName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BasePrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TomatoSauce)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cheese)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Peperoni)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mushroom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tuna)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pineapple)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ham)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Beef)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FinalPrice)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

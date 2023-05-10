@@ -1,0 +1,91 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+.mainText {
+    padding: 75px 20px;
+}
+
+.mainImage {
+    border-radius: 20px;
+    filter: drop-shadow(0px 0px 10px rgba(0,0,0,0.3));
+    margin: 40px;
+}
+
+.mainSubTitle {
+    font-weight: 400;
+    letter-spacing: 2px;
+}
+
+.smallText {
+    text-align: right;
+    color: grey;
+}
+
+.makeYourOwnDiv {
+    background: grey;
+    margin: 0;
+}
+
+.makeYourOwnText {
+    margin: 100px 0 20px 0;
+    color: white;
+}
+
+.pizza-img :hover {
+    transform: scale(1.05);
+}
+
+.user {
+    background-color: palevioletred;
+}
+
+.RegisterInputs {
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: 10px;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.neutral {
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.mainText, .mainImage, .makeYourOwnText {
+    margin: 20px;
+}
+
+.mainText {
+    padding: 50px;
+}
+
+.mainImage {
+    padding: 20px;
+}
+
+.makeYourOwnDiv {
+    padding: 30px;
+}
