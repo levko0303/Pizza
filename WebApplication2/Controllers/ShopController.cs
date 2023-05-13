@@ -26,6 +26,10 @@ namespace WebApplication2.Controllers
                           View(await _context.Pizza.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.Pizza'  is null.");
         }
+        public IActionResult MakeCustomPizza()
+        {
+            return View();
+        }
         public async Task<IActionResult> AddToCart(int? id)
         {
             if (id == null || _context.Pizza == null)
