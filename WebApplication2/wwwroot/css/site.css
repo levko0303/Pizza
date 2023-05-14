@@ -125,9 +125,9 @@ body {
 .pizzaCard {
     display: flex;
     flex-wrap: wrap;
-    margin: 30px;
     justify-content: center;
     align-items: center;
+    margin-bottom: 10px;
 }
 
 @media screen and (min-width: 1080px) {
@@ -182,4 +182,35 @@ nav{
     justify-content: center;
     align-items: center;
     flex-direction: column;
+}
+
+.sa{
+    background-color: #68645c;
+}
+
+.control-label {
+    font-weight: bold;
+}
+
+.form-control {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-check-label {
+    font-weight: normal;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0069d9;
+    color: #fff;
 }

@@ -28,9 +28,10 @@
             @foreach (var pizza in Model)
             {
                 var imagePath = "~/images/Pizzas/" + (pizza.ImageTitle + ".png");
-                <div class="pizzaCard">
+                <div class="pizzaCard sa">
                     <a asp-action="AddToCart" asp-route-id="@pizza.Id"> <img src="@imagePath" class="cardImage" asp-append-version="true" /></a>
                     <h5>@pizza.FinalPrice $</h5>
+                    <h5>@pizza.Details</h5>
                     <br />
                 </div>
             }
