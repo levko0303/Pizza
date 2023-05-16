@@ -5,8 +5,6 @@ VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pizzeria", "WebApplication2\Pizzeria.csproj", "{B71F1D9B-D382-4EC2-A7CA-DBE81DE60705}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Login", "..\PizzaLove\Login\Login\Login.csproj", "{7B6C45CC-8715-4A5D-BB3C-B246ED0502FF}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{B71F1D9B-D382-4EC2-A7CA-DBE81DE60705}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B71F1D9B-D382-4EC2-A7CA-DBE81DE60705}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B71F1D9B-D382-4EC2-A7CA-DBE81DE60705}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7B6C45CC-8715-4A5D-BB3C-B246ED0502FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B6C45CC-8715-4A5D-BB3C-B246ED0502FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B6C45CC-8715-4A5D-BB3C-B246ED0502FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B6C45CC-8715-4A5D-BB3C-B246ED0502FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

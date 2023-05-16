@@ -37,15 +37,14 @@ namespace WebApplication2.Controllers
                 return NotFound();
             }
 
-            var pizza = await _context.Pizza
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var pizza = await _context.Pizza.FirstOrDefaultAsync(m => m.Id == id);
             if (pizza == null)
             {
                 return NotFound();
             }
+
             var curr_usr = _context.Users.FirstOrDefault(m => m.UserName == User.Identity.Name);
-            var cart = await _context.Cart
-                .FirstOrDefaultAsync(m => m.Pizza == pizza && m.User == curr_usr);
+            var cart = await _context.Cart.FirstOrDefaultAsync(m => m.Pizza == pizza && m.User == curr_usr);
             if (cart == null)
             {
                 Cart newcart = new Cart();
@@ -58,8 +57,13 @@ namespace WebApplication2.Controllers
             {
                 cart.Quantity++;
             }
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+
+            await Task.Delay(1500); // Wait for 2 seconds
+
             return RedirectToAction(nameof(Index));
         }
+
+
     }
 }

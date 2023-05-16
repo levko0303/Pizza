@@ -29,7 +29,19 @@
             {
                 var imagePath = "~/images/Pizzas/" + (pizza.ImageTitle + ".png");
                 <div class="pizzaCard sa">
-                    <a asp-action="AddToCart" asp-route-id="@pizza.Id"> <img src="@imagePath" class="cardImage" asp-append-version="true" /></a>
+                    <script>
+                        function showPopup(pizzaName) {
+                            var popup = document.createElement('div');
+                            popup.classList.add('popup');
+                            popup.innerText = 'Added ' + pizzaName;
+                            document.body.appendChild(popup);
+
+                            setTimeout(function () {
+                                popup.remove();
+                            }, 5000);
+                        }
+                    </script>
+                    <a asp-action="AddToCart" asp-route-id="@pizza.Id"> <img src="@imagePath" class="cardImage" asp-append-version="true" onclick="showPopup('@pizza.PizzaName')" /></a>
                     <h5>@pizza.FinalPrice $</h5>
                     <h5>@pizza.Details</h5>
                     <br />
@@ -39,3 +51,15 @@
         </div>
     </div>
 </div>
+
+<style>
+    .popup {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #8FF18F;
+        padding: 10px;
+        border-radius: 4px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+</style>
