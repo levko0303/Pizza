@@ -1,6 +1,11 @@
 using NUnit.Framework;
 using WebApplication2.Models;
 
+//to count code coverage
+//write dotnet test --collect:"XPlat Code Coverage"
+//into shell
+
+
 namespace PizzaTests
 {
     public class PizzaTests
