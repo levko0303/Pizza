@@ -118,39 +118,43 @@ body {
     display: flex;
     flex-wrap: wrap;
     margin: 30px;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
 }
 
 .pizzaCard {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-around;
+    align-items: flex-start;
     margin-bottom: 10px;
 }
 
 @media screen and (min-width: 1080px) {
     .pizzaCard {
         flex-basis: 24%;
+        aspect-ratio:3/4;
     }
 }
 
 @media screen and (min-width: 768px) and (max-width: 1079px) {
     .pizzaCard {
         flex-basis: 32%;
+        aspect-ratio: 3/4;
     }
 }
 
 @media screen and (min-width: 375px) and (max-width: 767px) {
     .pizzaCard {
         flex-basis: 49%;
+        aspect-ratio: 3/4;
     }
 }
 
 @media screen and (max-width: 374px) {
     .pizzaCard {
         flex-basis: 100%;
+        aspect-ratio: 3/4;
     }
 }
 
@@ -184,8 +188,11 @@ nav{
     flex-direction: column;
 }
 
-.sa{
-    background-color: #68645c;
+.sa {
+    border: 2px solid black;
+    border-radius: 8px;
+    width: 300px;
+    height: 500px;
 }
 
 .control-label {
