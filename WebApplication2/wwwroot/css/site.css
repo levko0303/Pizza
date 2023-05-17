@@ -1,223 +1,353 @@
 html {
-    font-size: 14px;
+font-size: 14px;
     
 }
 
 header {
-    width: 100%;
+width: 100%;
 }
 
 nav {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+display: flex;
+justify-content: center;
+align-items: center;
 }
 
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+display: flex;
+justify-content: center;
+align-items: center;
 }
 
 .pb-3 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-flow: column;
+display: flex;
+justify-content: center;
+align-items: center;
+flex-flow: column;
 }
 
 @media (min-width: 768px) {
-    html {
-        font-size: 16px;
-    }
+html {
+    font-size: 16px;
+}
 }
 
 html {
-    position: relative;
-    min-height: 100%;
+position: relative;
+min-height: 100%;
 }
 
 body {
-    margin-bottom: 60px;
+margin-bottom: 60px;
 }
 
 .mainText {
-    padding: 75px 20px;
+padding: 75px 20px;
 }
 
 .mainImage {
-    border-radius: 20px;
-    filter: drop-shadow(0px 0px 10px rgba(0,0,0,0.3));
-    margin: 40px;
+border-radius: 20px;
+filter: drop-shadow(0px 0px 10px rgba(0,0,0,0.3));
+margin: 40px;
 }
 
 .mainSubTitle {
-    font-weight: 400;
-    letter-spacing: 2px;
+font-weight: 400;
+letter-spacing: 2px;
 }
 
 .smallText {
-    text-align: right;
-    color: grey;
+text-align: right;
+color: grey;
 }
 
 .makeYourOwnDiv {
-    background: grey;
-    margin: 0;
+background: grey;
+margin: 0;
 }
 
 .makeYourOwnText {
-    margin: 100px 0 20px 0;
-    color: white;
+margin: 100px 0 20px 0;
+color: white;
 }
 
 .pizza-img :hover {
-    transform: scale(1.05);
+transform: scale(1.05);
 }
 
 .user {
-    background-color: palevioletred;
+background-color: palevioletred;
 }
 
 .RegisterInputs {
-    display: flex;
-    align-content: center;
-    justify-content: space-between;
-    flex-direction: column;
-    gap: 10px;
+display: flex;
+align-content: center;
+justify-content: space-between;
+flex-direction: column;
+gap: 10px;
 }
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
 }
 
 .neutral {
-    background-color: #f4f4f4;
-    color: #333;
+background-color: #f4f4f4;
+color: #333;
 }
 
 .mainText, .mainImage, .makeYourOwnText {
-    margin: 20px;
+margin: 20px;
 }
 
 .mainText {
-    padding: 50px;
+padding: 50px;
 }
 
 .mainImage {
-    padding: 20px;
+padding: 20px;
 }
 
 .makeYourOwnDiv {
-    padding: 30px;
+padding: 30px;
 }
 
 .pizzaTable {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 30px;
-    justify-content: space-around;
-    align-items: center;
+display: flex;
+flex-wrap: wrap;
+margin: 30px;
+justify-content: space-around;
+align-items: center;
 }
 
 .pizzaCard {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    align-items: flex-start;
-    margin-bottom: 10px;
+display: flex;
+flex-wrap: wrap;
+justify-content: space-around;
+align-items: flex-start;
+margin-bottom: 10px;
 }
 
 @media screen and (min-width: 1080px) {
-    .pizzaCard {
-        flex-basis: 24%;
-        aspect-ratio:3/4;
-    }
+.pizzaCard {
+    flex-basis: 24%;
+    aspect-ratio:3/4;
+}
 }
 
 @media screen and (min-width: 768px) and (max-width: 1079px) {
-    .pizzaCard {
-        flex-basis: 32%;
-        aspect-ratio: 3/4;
-    }
+.pizzaCard {
+    flex-basis: 32%;
+    aspect-ratio: 3/4;
+}
 }
 
 @media screen and (min-width: 375px) and (max-width: 767px) {
-    .pizzaCard {
-        flex-basis: 49%;
-        aspect-ratio: 3/4;
-    }
+.pizzaCard {
+    flex-basis: 49%;
+    aspect-ratio: 3/4;
+}
 }
 
 @media screen and (max-width: 374px) {
-    .pizzaCard {
-        flex-basis: 100%;
-        aspect-ratio: 3/4;
-    }
+.pizzaCard {
+    flex-basis: 100%;
+    aspect-ratio: 3/4;
+}
 }
 
 
 nav{
-    width: 100%;
+width: 100%;
 }
 
 .makeOwnCard {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    background-color: #68645c;
-    text-align: center;
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+background-color: #68645c;
+text-align: center;
 }
 
 .makeOwnImg {
-    width: 40%;
+width: 40%;
 }
 
 .cardImage {
-    background-color: transparent;
-    width: 90%;
+background-color: transparent;
+width: 90%;
 }
 
 .makeYourOwnText {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
 }
 
 .sa {
-    border: 2px solid black;
-    border-radius: 8px;
-    width: 300px;
-    height: 500px;
+border: 2px solid black;
+border-radius: 8px;
+width: 300px;
+height: 500px;
 }
 
 .control-label {
-    font-weight: bold;
+font-weight: bold;
 }
 
 .form-control {
-    width: 100%;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+width: 100%;
+padding: 5px;
+border: 1px solid #ccc;
+border-radius: 4px;
+box-sizing: border-box;
 }
 
 .form-check-label {
-    font-weight: normal;
+font-weight: normal;
 }
 
 .btn-primary {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
+background-color: #007bff;
+color: #fff;
+border: none;
 }
 
 .btn-primary:hover {
-    background-color: #0069d9;
-    color: #fff;
+background-color: #0069d9;
+color: #fff;
 }
+.registerContainer {
+flex: 1;
+justify-content: center;
+align-items: center;
+height: 100vh;
+}
+
+.registerTable {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    border: 3px solid rgba(0, 0, 0, 0.8);
+    border-radius: 8px;
+}
+
+@media (max-width: 400px) {
+    .registerTable {
+        width: calc(100% - 40px); /* Adjust the width for smaller viewports */
+        margin-left: 20px; /* Add margin to center the form horizontally */
+        margin-right: 20px;
+    }
+}
+
+.form-group {
+    border: 3px solid rgba(0, 0, 0, 0.8);
+    border-top: 3px solid rgba(0, 0, 0, 0);
+    border-radius: 8px;
+}
+
+.regFormElement {
+margin-bottom: 25px;
+}
+
+.regFormElement{
+    position: relative;
+}
+
+.regFormElement .form-control {
+    padding: 10px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    background-color: transparent;
+    transition: border-bottom-color 0.3s ease;
+    width: 100%;
+}
+
+    .regFormElement .form-control:focus {
+        outline: none;
+        border-bottom-color: #6c757d;
+    }
+
+.regFormElement label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 14px;
+    padding: 10px;
+    color: #aaa;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.regFormElement .form-control:focus ~ label,
+.regFormElement .form-control:valid ~ label {
+    top: -20px;
+    left: 0;
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.registerTable .btn-primary {
+background-color: #007bff;
+border-color: #007bff;
+transition: background-color 0.3s ease;
+}
+
+.registerTable .btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+.loginCont {
+    flex: 1;
+}
+
+.asd {
+    display: flex;
+    border: 3px solid rgba(0, 0, 0, 0.8);
+    border-top: 3px solid rgba(0, 0, 0, 0);
+    border-radius: 8px;
+    flex-direction: row;
+}
+
+.regFormElement {
+    margin-bottom: 25px;
+    position: relative;
+}
+
+    .regFormElement .form-control {
+        padding: 10px;
+        border: none;
+        border-bottom: 1px solid #ddd;
+        background-color: transparent;
+        transition: border-bottom-color 0.3s ease;
+        width: 100%;
+        z-index: 1; /* Add this line */
+    }
+
+    .regFormElement label {
+        position: absolute;
+        left: 10px; /* Adjust the left value to create spacing */
+        top: -20px;
+        font-size: 14px;
+        padding-bottom: 100px;
+        color: #aaa;
+        pointer-events: none;
+        transition: all 0.3s ease;
+        z-index: 1; /* Add this line */
+        font-size: 12px;
+    }
+
+    .regFormElement .form-control:focus ~ label,
+    .regFormElement .form-control:valid ~ label {
+        top: -20px;
+        left: 10px; /* Adjust the left value to create spacing */
+        font-size: 12px;
+        color: #6c757d;
+    }
