@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 //write dotnet test --collect:"XPlat Code Coverage"
 //into shell
 
-//added tests and remade login/register/personal info
+//
 
 namespace WebApplication2.Tests.Controllers
 {

@@ -4,8 +4,12 @@
     ViewData["Title"] = "My cart";
 }
 
+
 @if (Model != null && Model.Any())
 {
+
+    float sumPrice = 0;
+    float totalPizzasQuantity = 0;
     <h1>Cart</h1>
 
     <table class="table">
@@ -32,9 +36,15 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Quantity)
+                        @{
+                            totalPizzasQuantity += item.Quantity;
+                        }
                     </td>
                     <td>
                         @(item.Pizza.FinalPrice * item.Quantity)
+                        @{
+                            sumPrice += item.Pizza.FinalPrice * item.Quantity;
+                        }
                     </td>
                     <td>
                         <form asp-action="Delete">
@@ -45,6 +55,22 @@
                 </tr>
             }
         </tbody>
+        <thead>
+            <tr>
+                <th>
+                    Final price
+                </th>
+                <th>
+                    @Html.DisplayFor(model => totalPizzasQuantity)
+
+                </th>
+                <th>
+                    @Html.DisplayFor(model => sumPrice)
+
+                </th>
+                <th></th>
+            </tr>
+        </thead>
     </table>
 
     <div>
