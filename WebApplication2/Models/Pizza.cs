@@ -16,7 +16,7 @@
         public bool Beef { get; set; }
         public float FinalPrice { get; set; }
         public string Details { get; set; }
-        public static float getFinale(Pizza pizza)
+        public static float getFinale(bool tomatoSauce, bool cheese, bool pepperoni, bool mushroom, bool tuna, bool pineapple, bool ham, bool beef)
         {
             float final = 0;
             float TomatoSauce = 2,
@@ -28,45 +28,38 @@
             Ham = 5,
             Beef = 1.5f;
 
-            if (pizza == null)
-            {
-                return final;
-            }
-            else
-            {
-                if (pizza.TomatoSauce)
+                if (tomatoSauce)
                 {
                     final += TomatoSauce;
                 }
-                if (pizza.Cheese)
+                else if(cheese)
                 {
                     final += Cheese;
                 }
-                if (pizza.Peperoni)
+                else if(pepperoni)
                 {
                     final += Peperoni;
                 }
-                if (pizza.Mushroom)
+                else if(mushroom)
                 {
                     final += Mushroom;
                 }
-                if (pizza.Tuna)
+                else if(tuna)
                 {
                     final += Tuna;
                 }
-                if (pizza.Pineapple)
+                else if(pineapple)
                 {
                     final += Pineapple;
                 }
-                if (pizza.Ham)
+                else if(ham)
                 {
                     final += Ham;
                 }
-                if (pizza.Beef)
+                else if(beef)
                 {
                     final += Beef;
                 }
-            }
 
             return final;
         }

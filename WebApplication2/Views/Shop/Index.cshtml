@@ -21,7 +21,7 @@
             <div class="makeYourOwnText">
                 <h3 style="text-align:left;">Create your own Pizza</h3>
                 <p style="text-align:left;">Make your own pizza with our Pizzamaker!</p>
-                <a class="btn btn-primary" style="float: left" asp-area="" asp-controller="Shop" asp-action="MakeCustomPizza">Try now!</a>
+                <a class="btn btn-primary" style="float: left" asp-area="" asp-controller="Carts" asp-action="MakeCustomPizza">Try now!</a>
             </div>
         </div>
         <div class="pizzaTable">
@@ -41,7 +41,9 @@
                             }, 5000);
                         }
                     </script>
-                    <a asp-action="AddToCart" asp-route-id="@pizza.Id"> <img src="@imagePath" class="cardImage" asp-append-version="true" onclick="showPopup('@pizza.PizzaName')" /></a>
+                    <a asp-controller="Carts" asp-action="AddToCart" asp-route-id="@pizza.Id" onclick="event.preventDefault(); addToCart(@pizza.Id)">
+                        <img src="@imagePath" class="cardImage" asp-append-version="true" onclick="showPopup('@pizza.PizzaName')" />
+                    </a>
                     <h5>@pizza.FinalPrice $</h5>
                     <h5>@pizza.Details</h5>
                     <br />
@@ -50,7 +52,22 @@
         </div>
         </div>
     </div>
-</div>
+
+<script>
+    function addToCart(pizzaId) {
+        $.ajax({
+            url: '@Url.Action("AddToCart", "Carts")',
+            type: 'POST',
+            data: { id: pizzaId },
+            success: function (response) {
+                alert('Pizza added to cart!');
+            },
+            error: function (xhr, status, error) {
+                alert('Error occurred while adding pizza to cart.');
+            }
+        });
+    }
+</script>
 
 <style>
     .popup {

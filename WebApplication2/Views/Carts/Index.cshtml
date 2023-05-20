@@ -47,7 +47,7 @@
                         }
                     </td>
                     <td>
-                        <form asp-action="Delete">
+                        <form asp-controller="Carts" asp-action="Delete">
                             <input type="hidden" value="@item.Id" name="item_id" />
                             <input type="submit" value="Delete" class="btn btn-danger" />
                         </form>
@@ -68,11 +68,14 @@
                     @Html.DisplayFor(model => sumPrice)
 
                 </th>
-                <th></th>
+                <th>
+                    <form asp-controller="Carts" asp-action="DeleteAll">
+                        <input type="submit" value="Discard Order" class="btn btn-danger" />
+                    </form>
+                </th>
             </tr>
         </thead>
     </table>
-
     <div>
         <a class="btn btn-primary mt-1" asp-area="" asp-controller="Carts" asp-action="Buy">Buy</a>
     </div>

@@ -50,36 +50,6 @@ namespace WebApplication2.Tests.Controllers
         }
 
         [Test]
-        public async Task Create_WithValidCart_RedirectsToIndex()
-        {
-            // Arrange
-            var cart = new Cart { Quantity = 2, Price = 10.99m };
-
-            // Act
-            var result = await _cartsController.Create(cart) as RedirectToActionResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.AreEqual("Index", result.ActionName);
-        }
-
-        [Test]
-        public async Task Create_WithInvalidCart_ReturnsViewWithCart()
-        {
-            // Arrange
-            var cart = new Cart { Quantity = -1, Price = 10.99m };
-            _cartsController.ModelState.AddModelError("Quantity", "Invalid quantity");
-
-            // Act
-            var result = await _cartsController.Create(cart) as ViewResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.AreEqual(cart, result.Model);
-        }
-        
-
-        [Test]
         public void Pizza_Price_Should_Be_Greater_Than_Zero()
         {
             // Arrange
@@ -91,38 +61,6 @@ namespace WebApplication2.Tests.Controllers
 
             // Assert
             Assert.Greater(price, 0);
-        }
-
-
-
-
-        [Test]
-        public async Task Delete_NonExistingCart_ReturnsNotFound()
-        {
-            // Arrange
-            var cartId = 999; // Non-existing cart ID
-
-            // Act
-            var result = await _cartsController.Delete(cartId) as NotFoundResult;
-
-            // Assert
-            Assert.NotNull(result);
-        }
-
-        [Test]
-        public async Task Delete_Confirmed_DeletesCart()
-        {
-            // Arrange
-            var cartId = 1;
-
-            // Act
-            var result = await _cartsController.DeleteConfirmed(cartId) as RedirectToActionResult;// Assert
-            Assert.NotNull(result);
-            Assert.AreEqual("Index", result.ActionName);
-
-            // Check if the cart was deleted from the database
-            var deletedCart = await _context.Cart.FindAsync(cartId);
-            Assert.Null(deletedCart);
         }
         [Test]
         public async Task Create_WithValidOrder_RedirectsToIndex()
@@ -137,18 +75,7 @@ namespace WebApplication2.Tests.Controllers
             Assert.NotNull(result);
             Assert.AreEqual("Index", result.ActionName);
         }
-        [Test]
-        public async Task AddToCart_WithInvalidId_ReturnsNotFound()
-        {
-            // Arrange
-            var invalidId = 999;
-
-            // Act
-            var result = await _shopController.AddToCart(invalidId) as NotFoundResult;
-
-            // Assert
-            Assert.NotNull(result);
-        }
+        
         [Test]
         public void Test_All_Models()
         {

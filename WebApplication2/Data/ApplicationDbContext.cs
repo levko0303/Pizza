@@ -10,6 +10,7 @@ namespace WebApplication2.Data
     {
         public DbSet<Order> Orders { get; set; }
         public DbSet<Cart> Cart { get; set; }
+        public DbSet<Shop> Shop { get; set; }
         public DbSet<Pizza> Pizza { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<PizzaToOrder> PizzaToOrder { get; set; }

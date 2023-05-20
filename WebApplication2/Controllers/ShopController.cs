@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -27,10 +28,6 @@ namespace WebApplication2.Controllers
                           View(await _context.Pizza.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.Pizza'  is null.");
         }
-        public IActionResult MakeCustomPizza()
-        {
-            return View();
-        }
         public async Task<IActionResult> AddToCart(int? id)
         {
             if (id == null || _context.Pizza == null)
@@ -51,12 +48,7 @@ namespace WebApplication2.Controllers
                 Cart newcart = new Cart();
                 newcart.Pizza = pizza;
                 newcart.User = curr_usr;
-                newcart.Quantity = 1;
                 _context.Cart.Add(newcart);
-            }
-            else
-            {
-                cart.Quantity++;
             }
             await _context.SaveChangesAsync();
 
@@ -65,48 +57,158 @@ namespace WebApplication2.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> AddCustomPizza(string pizzaName, bool tomatoSauce, bool cheese, bool peperoni, bool mushroom, bool tuna, bool pineapple, bool ham, bool beef)
-        {
-            // Create a new Pizza instance with the selected toppings
-            Pizza customPizza = new Pizza
-            {
-                PizzaName = pizzaName,
-                TomatoSauce = tomatoSauce,
-                Cheese = cheese,
-                Peperoni = peperoni,
-                Mushroom = mushroom,
-                Tuna = tuna,
-                Pineapple = pineapple,
-                Ham = ham,
-                Beef = beef,
-                
-                Details = "Test",
-                ImageTitle = pizzaName,
-            };
-            customPizza.FinalPrice = Pizza.getFinale(customPizza);
+        
 
-            // Add the custom pizza to the database
-            var curr_usr = _context.Users.FirstOrDefault(m => m.UserName == User.Identity.Name);
-            var cart = await _context.Cart.FirstOrDefaultAsync(m => m.Pizza == customPizza && m.User == curr_usr);
+        // GET: Carts/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null || _context.Shop == null)
+            {
+                return NotFound();
+            }
+
+            var cart = await _context.Shop
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (cart == null)
             {
-                Cart newcart = new Cart();
-                newcart.Pizza = customPizza;
-                newcart.User = curr_usr;
-                newcart.Quantity = 1;
-                _context.Cart.Add(newcart);
+                return NotFound();
             }
-            else
-            {
-                cart.Quantity++;
-            }
-            await _context.SaveChangesAsync();
 
-            await Task.Delay(1500); // Wait for 2 seconds
-
-            // Redirect the user back to the main pizza page
-            return RedirectToAction(nameof(Index));
+            return View(cart);
         }
 
+        // GET: Carts/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Carts/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,Quantity,Price")] Cart cart)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(cart);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(cart);
+        }
+
+        // GET: Carts/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null || _context.Shop == null)
+            {
+                return NotFound();
+            }
+
+            var cart = await _context.Shop.FindAsync(id);
+            if (cart == null)
+            {
+                return NotFound();
+            }
+            return View(cart);
+        }
+
+        // POST: Carts/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Quantity,Price")] Cart cart)
+        {
+            if (id != cart.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(cart);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CartExists(cart.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(cart);
+        }
+
+        // GET: Carts/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null || _context.Shop == null)
+            {
+                return NotFound();
+            }
+
+            var cart = await _context.Shop
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (cart == null)
+            {
+                return NotFound();
+            }
+
+            return View(cart);
+        }
+
+        public async Task<IActionResult> DeleteAll()
+        {
+            if (_context.Shop == null)
+            {
+                return NotFound();
+            }
+
+            var cartItems = await _context.Shop.ToListAsync();
+            if (cartItems == null || cartItems.Count == 0)
+            {
+                return NotFound();
+            }
+
+            _context.Shop.RemoveRange(cartItems);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index"); // Redirect to the desired action after deleting all items
+        }
+
+
+        // POST: Carts/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int item_id)
+        {
+            if (_context.Shop == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Cart'  is null.");
+            }
+            var cart = await _context.Shop.FindAsync(item_id);
+            if (cart != null)
+            {
+                _context.Shop.Remove(cart);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+        private bool CartExists(int id)
+        {
+            return (_context.Shop?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
     }
 }
