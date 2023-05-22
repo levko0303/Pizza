@@ -34,7 +34,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index">MyOrder</a>
                         </li>
-                        @if (User.Identity?.Name == "admin@gmail.com")
+                        @if (User.Identity?.Name == "admin@gmail.com" || User.Identity?.Name == "levko0303@gmail.com")
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Pizzas" asp-action="Index">Admin Panel</a>

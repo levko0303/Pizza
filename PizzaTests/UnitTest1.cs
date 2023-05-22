@@ -26,42 +26,29 @@ namespace WebApplication2.Tests.Controllers
         {
 
 
-            // Конфігурування контексту бази даних
+            // ?????????????? ????????? ???? ?????
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
              .UseInMemoryDatabase(databaseName: "TestDb")
              .Options;
             _context = new ApplicationDbContext(options);
             SeedDatabase();
 
-            /// Створення контролера CartsController з підробленим контекстом бази даних
+            /// ????????? ?????????? CartsController ? ?????????? ?????????? ???? ?????
             _cartsController = new CartsController(_context);
 
-            // Створення контролера OrdersController з підробленим контекстом бази даних
+            // ????????? ?????????? OrdersController ? ?????????? ?????????? ???? ?????
             _ordersController = new OrdersController(_context);
-            // Створення контролера ShopController з підробленим контекстом бази даних
+            // ????????? ?????????? ShopController ? ?????????? ?????????? ???? ?????
             _shopController = new ShopController(_context);
         }
 
         [TearDown]
         public void TearDown()
         {
-            // Видалення тестової бази даних
+            // ????????? ??????? ???? ?????
             _context.Database.EnsureDeleted();
         }
 
-        [Test]
-        public async Task Create_WithValidCart_RedirectsToIndex()
-        {
-            // Arrange
-            var cart = new Cart { Quantity = 2, Price = 10.99m };
-
-            // Act
-            var result = await _cartsController.Create(cart) as RedirectToActionResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.AreEqual("Index", result.ActionName);
-        }
 
         [Test]
         public async Task Create_WithInvalidCart_ReturnsViewWithCart()
@@ -77,7 +64,22 @@ namespace WebApplication2.Tests.Controllers
             Assert.NotNull(result);
             Assert.AreEqual(cart, result.Model);
         }
-        
+        [Test]
+        public async Task Create_WithValidCart_RedirectsToIndex()
+        {
+            // Arrange
+            var cart = new Cart { Quantity = 2, Price = 10.99m };
+
+            // Act
+            var result = await _cartsController.Create(cart) as RedirectToActionResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.AreEqual("Index", result.ActionName);
+        }
+
+
+
 
         [Test]
         public void Pizza_Price_Should_Be_Greater_Than_Zero()
@@ -268,11 +270,127 @@ namespace WebApplication2.Tests.Controllers
                 Assert.IsNotNull(pizza.PizzaName);
             }
         }
+        [Test]
+        public async Task Index_ReturnsViewResultWithCartList()
+        {
+            // Arrange
+            var carts = new List<Cart>
+    {
+        new Cart { Id = 1, Quantity = 2, Price = 10.99m },
+        new Cart { Id = 2, Quantity = 3, Price = 15.99m }
+    };
+            _context.Cart.AddRange(carts);
+            _context.SaveChanges();
+            var expectedCartList = carts.Where(m => m.Id == 1);
+
+            // Act
+            var result = _cartsController.Index();
+
+
+            // Assert
+            Assert.NotNull(result);
+
+        }
+
+        [Test]
+        public async Task Buy_ClearsCartAndCreatesOrder()
+        {
+            // Arrange
+            var curr_usr = new IdentityUser { UserName = "john.doe" };
+            _context.Users.Add(curr_usr);
+            _context.SaveChanges();
+            var cartItems = new List<Cart>
+    {
+        new Cart { Id = 1, User = curr_usr, Quantity = 2, Price = 10.99m },
+        new Cart { Id = 2, User = curr_usr, Quantity = 3, Price = 15.99m }
+    };
+            _context.Cart.AddRange(cartItems);
+            _context.SaveChanges();
+            var expectedOrder = new Order { User = curr_usr };
+
+            // Act
+            var result = _cartsController.Buy() as RedirectToActionResult;
+            var orders = _context.Orders.Where(o => o.User.UserName == curr_usr.UserName).ToList();
+            var cartItemsAfterBuy = _context.Cart.Where(c => c.User.UserName == curr_usr.UserName).ToList();
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.AreEqual("Index", result.ActionName);
+            Assert.AreEqual(1, orders.Count());
+            Assert.AreEqual(expectedOrder.User.UserName, orders.First().User.UserName);
+            Assert.AreEqual(0, cartItemsAfterBuy.Count());
+        }
+
+        [Test]
+        public async Task Details_WithValidId_ReturnsViewResultWithCart()
+        {
+            // Arrange
+            var cartId = 1;
+            var cart = new Cart { Id = cartId, Quantity = 2, Price = 10.99m };
+            _context.Cart.Add(cart);
+            _context.SaveChanges();
+
+            // Act
+            var result = await _cartsController.Details(cartId) as ViewResult;
+            var model = result?.Model as Cart;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.NotNull(model);
+            Assert.AreEqual(cartId, model.Id);
+            Assert.AreEqual(cart.Quantity, model.Quantity);
+            Assert.AreEqual(cart.Price, model.Price);
+        }
+
+        [Test]
+        public async Task Details_WithInvalidId_ReturnsNotFound()
+        {
+            // Arrange
+            var invalidCartId = 999;
+
+            // Act
+            var result = await _cartsController.Details(invalidCartId) as NotFoundResult;
+
+            // Assert
+            Assert.NotNull(result);
+        }
+
+
+
+
+
+
+        [Test]
+        public async Task Edit_WithInvalidCart_ReturnsNotFound()
+        {
+            // Arrange
+            var invalidCartId = 999; // ID неіснуючого об'єкта Cart
+
+            // Act
+            var result = await _cartsController.Edit(invalidCartId) as NotFoundResult;
+
+            // Assert
+            Assert.NotNull(result);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         private void SeedDatabase()
         {
-            // Додавання тестових даних до бази даних
+            // ????????? ???????? ????? ?? ???? ?????
             var pizza = new Pizza
             {
                 Id = 1,
