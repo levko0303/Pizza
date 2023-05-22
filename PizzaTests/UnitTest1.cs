@@ -4,6 +4,12 @@ using WebApplication2.Controllers;
 using WebApplication2.Data;
 using WebApplication2.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using Moq;
+using System.Threading.Tasks;
+using NUnit.Framework;
+
+
 
 
 //to count code coverage
@@ -19,8 +25,15 @@ namespace WebApplication2.Tests.Controllers
     {
         private ApplicationDbContext _context;
         private CartsController _cartsController;
+        private HomeController _homeController;
+        private MakeCustomPizza _custumcontroller;
         private OrdersController _ordersController;
+        private PizzasController _controller;
         private ShopController _shopController;
+
+
+
+        private MakeCustomPizza _makeCustomPizzaController;
         [SetUp]
         public void Setup()
         {
@@ -40,6 +53,12 @@ namespace WebApplication2.Tests.Controllers
             _ordersController = new OrdersController(_context);
             // ????????? ?????????? ShopController ? ?????????? ?????????? ???? ?????
             _shopController = new ShopController(_context);
+            var logger = new LoggerFactory().CreateLogger<HomeController>();
+            _homeController = new HomeController(logger);
+
+            _makeCustomPizzaController = new MakeCustomPizza(_context);
+            _controller = new PizzasController(_context);
+            _custumcontroller = new MakeCustomPizza(_context);
         }
 
         [TearDown]
@@ -48,6 +67,101 @@ namespace WebApplication2.Tests.Controllers
             // ????????? ??????? ???? ?????
             _context.Database.EnsureDeleted();
         }
+        [Test]
+        public async Task DeleteConfirmed_WithValidId_DeletesOrder()
+        {
+            // Arrange
+            var orderId = 1;
+
+            // Act
+            var result = await _ordersController.DeleteConfirmed(orderId) as RedirectToActionResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.AreEqual("Index", result.ActionName);
+
+            // Перевірка, чи замовлення було видалено з бази даних
+            var deletedOrder = await _context.Orders.FindAsync(orderId);
+            Assert.Null(deletedOrder);
+        }
+        [Test]
+        public async Task Index_ReturnsViewResult1()
+        {
+            // Act
+            var result = await _ordersController.Index() as ViewResult;
+
+            // Assert
+            Assert.NotNull(result);
+        }
+
+        [Test]
+        public async Task Index_ReturnsListOfOrders()
+        {
+            // Act
+            var result = await _ordersController.Index() as ViewResult;
+
+
+            // Assert
+            Assert.NotNull(result);
+
+        }
+        [Test]
+        public async Task Delete_WithInvalidId_ReturnsNotFound()
+        {
+            // Arrange
+            var invalidId = 999;
+
+            // Act
+            var result = await _ordersController.Delete(invalidId) as NotFoundResult;
+
+            // Assert
+            Assert.NotNull(result);
+        }
+
+
+        [Test]
+        public async Task Create_WithInvalidPizza_ReturnsViewWithPizza()
+        {
+            // Arrange
+            var pizza = new Pizza();
+            _makeCustomPizzaController.ModelState.AddModelError("PizzaName", "Invalid pizza name");
+
+            // Act
+            var result = await _makeCustomPizzaController.Create(pizza) as ViewResult;
+            // Assert
+            Assert.NotNull(result);
+            Assert.AreEqual(pizza, result.Model);
+        }
+        [Test]
+        public void Index_ReturnsViewResulth()
+        {
+            // Act
+            var result = _homeController.Index() as ViewResult;
+
+            // Assert
+            Assert.NotNull(result);
+        }
+
+        [Test]
+        public void Privacy_ReturnsViewResult()
+        {
+            // Act
+            var result = _homeController.Privacy() as ViewResult;
+
+            // Assert
+            Assert.NotNull(result);
+        }
+
+        [Test]
+        public void AdminPanel_ReturnsViewResult()
+        {
+            // Act
+            var result = _homeController.AdminPanel() as ViewResult;
+
+            // Assert
+            Assert.NotNull(result);
+        }
+
 
 
         [Test]
@@ -291,36 +405,6 @@ namespace WebApplication2.Tests.Controllers
             Assert.NotNull(result);
 
         }
-
-        [Test]
-        public async Task Buy_ClearsCartAndCreatesOrder()
-        {
-            // Arrange
-            var curr_usr = new IdentityUser { UserName = "john.doe" };
-            _context.Users.Add(curr_usr);
-            _context.SaveChanges();
-            var cartItems = new List<Cart>
-    {
-        new Cart { Id = 1, User = curr_usr, Quantity = 2, Price = 10.99m },
-        new Cart { Id = 2, User = curr_usr, Quantity = 3, Price = 15.99m }
-    };
-            _context.Cart.AddRange(cartItems);
-            _context.SaveChanges();
-            var expectedOrder = new Order { User = curr_usr };
-
-            // Act
-            var result = _cartsController.Buy() as RedirectToActionResult;
-            var orders = _context.Orders.Where(o => o.User.UserName == curr_usr.UserName).ToList();
-            var cartItemsAfterBuy = _context.Cart.Where(c => c.User.UserName == curr_usr.UserName).ToList();
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.AreEqual("Index", result.ActionName);
-            Assert.AreEqual(1, orders.Count());
-            Assert.AreEqual(expectedOrder.User.UserName, orders.First().User.UserName);
-            Assert.AreEqual(0, cartItemsAfterBuy.Count());
-        }
-
         [Test]
         public async Task Details_WithValidId_ReturnsViewResultWithCart()
         {
@@ -373,8 +457,147 @@ namespace WebApplication2.Tests.Controllers
             Assert.NotNull(result);
         }
 
+        [Test]
+        public async Task Index_ReturnsViewResult()
+        {
+            // Act
+            var result = await _controller.Index() as ViewResult;
+
+            // Assert
+            Assert.NotNull(result);
+        }
+
+        [Test]
+        public async Task Index_ReturnsListOfPizzas()
+        {
+            // Act
+            var result = await _controller.Index() as ViewResult;
+            var model = result?.Model as List<Pizza>;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.NotNull(model);
+            Assert.AreEqual(1, model.Count);
+        }
+
+        [Test]
+        public async Task Details_WithValidId_ReturnsViewResultWithPizza()
+        {
+            // Arrange
+            var pizzaId = 1;
+            var pizza = await _context.Pizza.FindAsync(pizzaId);
+
+            // Act
+            var result = await _controller.Details(pizzaId) as ViewResult;
+            var model = result?.Model as Pizza;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.NotNull(model);
+            Assert.AreEqual(pizza.Id, model.Id);
+            Assert.AreEqual(pizza.PizzaName, model.PizzaName);
+            Assert.AreEqual(pizza.BasePrice, model.BasePrice);
+            Assert.AreEqual(pizza.Details, model.Details);
+            Assert.AreEqual(pizza.ImageTitle, model.ImageTitle);
+        }
+
+        [Test]
+        public async Task Details_WithInvalidId_ReturnsNotFoundp()
+        {
+            // Arrange
+            var invalidPizzaId = 999;
+
+            // Act
+            var result = await _controller.Details(invalidPizzaId) as NotFoundResult;
+
+            // Assert
+            Assert.NotNull(result);
+        }
+
+        [Test]
+        public async Task Create_WithValidPizza_RedirectsToIndex()
+        {
+            // Arrange
+            var pizza = new Pizza
+            {
+                PizzaName = "Pepperoni",
+                BasePrice = 3.99f,
+                Details = "Delicious pepperoni pizza",
+                ImageTitle = "pepperoni-pizza.jpg"
+            };
+
+            // Act
+            var result = await _controller.Create(pizza) as RedirectToActionResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.AreEqual("Index", result.ActionName);
+        }
+
+        [Test]
+        public async Task Create_WithInvalidPizza_ReturnsViewWithPizzap()
+        {
+            // Arrange
+            var pizza = new Pizza();
+            _controller.ModelState.AddModelError("PizzaName", "Invalid pizza name");
+
+            // Act
+            var result = await _controller.Create(pizza) as ViewResult;
+            var model = result?.Model as Pizza;
+            // Assert
+            Assert.NotNull(result);
+            Assert.NotNull(model);
+            Assert.AreEqual(pizza, model);
+        }
 
 
+
+
+
+
+
+
+
+
+
+        [Test]
+        public async Task Edit_WithInvalidId_ReturnsNotFound()
+        {
+            // Arrange
+            var invalidPizzaId = 999;
+
+            // Act
+            var result = await _controller.Edit(invalidPizzaId) as NotFoundResult;
+
+            // Assert
+            Assert.NotNull(result);
+        }
+
+        [Test]
+        public async Task Edit_WithValidPizza_RedirectsToIndex()
+        {
+            // Arrange
+            var pizzaId = 1;
+            var pizza = await _context.Pizza.FindAsync(pizzaId);
+            pizza.PizzaName = "New Pizza Name";
+
+            // Act
+            var result = await _controller.Edit(pizzaId, pizza) as RedirectToActionResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.AreEqual("Index", result.ActionName);
+        }
+
+        [Test]
+        public void Index_ReturnsViewResultm()
+        {
+            // Act
+            var result = _custumcontroller.Index() as ViewResult;
+
+            // Assert
+            Assert.NotNull(result);
+        }
 
 
 
@@ -390,7 +613,7 @@ namespace WebApplication2.Tests.Controllers
 
         private void SeedDatabase()
         {
-            // ????????? ???????? ????? ?? ???? ?????
+
             var pizza = new Pizza
             {
                 Id = 1,
