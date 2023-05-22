@@ -27,30 +27,32 @@
         <div class="pizzaTable">
             @foreach (var pizza in Model)
             {
-                var imagePath = "~/images/Pizzas/" + (pizza.ImageTitle + ".png");
-                <div class="pizzaCard sa">
-                    <script>
-                        function showPopup(pizzaName) {
-                            var popup = document.createElement('div');
-                            popup.classList.add('popup');
-                            popup.innerText = 'Added ' + pizzaName;
-                            document.body.appendChild(popup);
+                if (pizza.Details != "Test")
+                {
+                    var imagePath = "~/images/Pizzas/" + (pizza.ImageTitle + ".png");
+                    <div class="pizzaCard sa">
+                        <script>
+                            function showPopup(pizzaName) {
+                                var popup = document.createElement('div');
+                                popup.classList.add('popup');
+                                popup.innerText = 'Added ' + pizzaName;
+                                document.body.appendChild(popup);
 
-                            setTimeout(function () {
-                                popup.remove();
-                            }, 5000);
-                        }
-                    </script>
-                    <a asp-action="AddToCart" asp-route-id="@pizza.Id"> <img src="@imagePath" class="cardImage" asp-append-version="true" onclick="showPopup('@pizza.PizzaName')" /></a>
-                    <h5>@pizza.FinalPrice $</h5>
-                    <h5>@pizza.Details</h5>
-                    <br />
-                </div>
+                                setTimeout(function () {
+                                    popup.remove();
+                                }, 5000);
+                            }
+                        </script>
+                        <a asp-action="AddToCart" asp-route-id="@pizza.Id"> <img src="@imagePath" class="cardImage" asp-append-version="true" onclick="showPopup('@pizza.PizzaName')" /></a>
+                        <h5>@pizza.FinalPrice $</h5>
+                        <h5>@pizza.Details</h5>
+                        <br />
+                    </div>
+                }
             }
         </div>
         </div>
     </div>
-</div>
 
 <style>
     .popup {

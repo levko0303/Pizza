@@ -70,6 +70,8 @@ namespace WebApplication2.Controllers
             return View(cart);
         }
 
+
+
         // GET: Carts/Create
         public IActionResult Create()
         {
@@ -159,6 +161,26 @@ namespace WebApplication2.Controllers
             }
 
             return View(cart);
+        }
+
+        public async Task<IActionResult>
+        DeleteAll()
+        {
+            if (_context.Cart == null)
+            {
+                return NotFound();
+            }
+
+            var cartItems = await _context.Cart.ToListAsync();
+            if (cartItems == null || cartItems.Count == 0)
+            {
+                return NotFound();
+            }
+
+            _context.Cart.RemoveRange(cartItems);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index"); // Redirect to the desired action after deleting all items
         }
 
         // POST: Carts/Delete/5

@@ -7,50 +7,126 @@
 <div class="checkBoxContainer">
     <div class="formContainer">
         <h1>Create Your Own Pizza!</h1>
-        <form method="post" action="/Shop/AddCustomPizza">
-            <input type="text" placeholder="Give your pizza a name..." name="PizzaName" />
-            <br />
-            <input type="checkbox" placeholder="Tomato Sauce" name="TomatoSauce" />Tomato Sauce
-            <br />
-            <input type="checkbox" placeholder="Cheese" name="Cheese" />Cheese
-            <br />
-            <input type="checkbox" placeholder="Pepperoni" name="Pepperoni" />Pepperoni
-            <br />
-            <input type="checkbox" placeholder="Mushroom" name="Mushroom" />Mushroom
-            <br />
-            <input type="checkbox" placeholder="Tuna" name="Tuna" />Tuna
-            <br />
-            <input type="checkbox" placeholder="Pineapple" name="Pineapple" />Pineapple
-            <br />
-            <input type="checkbox" placeholder="Ham" name="Ham" />Ham
-            <br />
-            <input type="checkbox" placeholder="Beef" name="Beef" />Beef
-            <br />
+        <form id="customPizzaForm" type="submit" action="AddCustomPizza" class="formContainer">
+            
+            <div class="ca ca123sa">
+                <input asp-for="PizzaName" class="form-control" placeholder="Enter name..."/>
+                <label asp-for="PizzaName" class="control-label"></label>
+            </div>
+            
+            <div class="ca">
+                <label class="control-label">2 $</label>
+                <label asp-for="TomatoSauce" class="control-label">Tomato Sauce</label>
+                <input asp-for="TomatoSauce" type="checkbox"/>
+            </div>
+            <div class="ca">
+                <label class="control-label">1 $</label>
+                <label asp-for="Cheese" class="control-label">Cheese</label>
+                <input asp-for="Cheese" type="checkbox"/>
+            </div>
+            <div class="ca">
+                <label class="control-label">0.5 $</label>
+                <label asp-for="Peperoni" class="control-label">Pepperoni</label>
+                <input asp-for="Peperoni" type="checkbox"/>
+            </div>
+            <div class="ca">
+                <label class="control-label">0.3 $</label>
+                <label asp-for="Mushroom" class="control-label">Mushroom</label>
+                <input asp-for="Mushroom" type="checkbox"/>
+            </div>
+            <div class="ca">
+                <label class="control-label">12 $</label>
+                <label asp-for="Tuna" class="control-label">Tuna</label>
+                <input asp-for="Tuna" type="checkbox"/>
+            </div>
+            <div class="ca">
+                <label class="control-label">9 $</label>
+                <label asp-for="Pineapple" class="control-label">Pineapple</label>
+                <input asp-for="Pineapple" type="checkbox"/>
+            </div>
+            <div class="ca">
+                <label class="control-label">5 $</label>
+                <label asp-for="Ham" class="control-label">Ham</label>
+                <input asp-for="Ham" type="checkbox"/>
+            </div>
+            <div class="ca">
+                <label class="control-label">1.5 $</label>
+                <label asp-for="Beef" class="control-label">Beef</label>
+                <input asp-for="Beef" type="checkbox"/>
+            </div>
 
-            <button class="btn btn-primary" type="submit">Order My Pizza</button>
+            <p>
+                Final Price: $<span id="finalPrice">
+                    2 - price for azyme
+                </span>
+            </p>
+
+            <button class="btn btn-primary" type="submit">Add to Cart</button>
         </form>
     </div>
 </div>
+
+<script>
+    function calculateFinalPrice() {
+        var price = 2;
+        var toppings = {
+            TomatoSauce: 2,
+            Cheese: 1,
+            Peperoni: 0.5,
+            Mushroom: 0.3,
+            Tuna: 12,
+            Pineapple: 9,
+            Ham: 5,
+            Beef: 1.5
+        };
+
+        var form = document.getElementById('customPizzaForm');
+        var checkboxes = form.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                if (this.checked) {
+                    var topping = this.name;
+                    price += toppings[topping];
+                } else {
+                    var topping = this.name;
+                    price -= toppings[topping];
+                }
+                var finalPriceElement = document.getElementById('finalPrice');
+                finalPriceElement.textContent = price.toFixed(2);
+            });
+        });
+    }
+
+    var form = document.getElementById('customPizzaForm');
+    form.addEventListener('submit', function (e) {
+        e.preventDefault(); // Prevent the form from submitting
+        calculateFinalPrice(); // Calculate the final price when the form is submitted
+        form.submit(); // Submit the form
+    });
+
+    calculateFinalPrice();
+
+</script>
 
 <style>
     .checkBoxContainer {
         display: flex;
         justify-content: center;
         align-items: center;
+        width: 100%;
     }
 
     .formContainer {
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 5px;
         background-color: lightgray;
         border-radius: 5px;
+        width: 100%;
     }
 
         .formContainer input[type="text"],
         .formContainer input[type="checkbox"] {
-            margin-bottom: 10px;
             border: 1px solid #007bff;
         }
 
@@ -58,39 +134,43 @@
             appearance: none;
             -webkit-appearance: none;
             -moz-appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            border-radius: 20px;
             border: 1px solid #ccc;
             vertical-align: middle;
-            margin-right: 8px;
+            background-color: white;
+            transition: background-color 0.3s ease;
         }
+
+            .formContainer input[type="checkbox"]:checked {
+                background-color: #007bff;
+            }
 
             .formContainer input[type="checkbox"]::before {
                 content: "";
-                display: inline-block;
-                width: 100%;
-                height: 100%;
-                background-color: white;
-                border-radius: 50%;
-                border: 1px solid #007bff;
-                transition: background-color 0.3s ease;
-            }
-
-            .formContainer input[type="checkbox"]:checked::before {
-                background-color: #ccc;
+                display: none;
             }
 
         .formContainer label {
             display: flex;
             align-items: center;
             cursor: pointer;
-            padding-left: 5px;
         }
 
         .formContainer button {
             width: 100%;
-            margin-top: 10px;
         }
+
+    .ca {
+        display: flex;
+        flex-direction: row-reverse;
+        width: 60%;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 15px;
+        padding-top: 10px;
+    }
+}
 </style>
 

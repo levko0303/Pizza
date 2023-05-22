@@ -53,6 +53,8 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
+            if (item.Details != "Test")
+            {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.ImageTitle)
@@ -99,6 +101,7 @@
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
+}
 }
     </tbody>
 </table>

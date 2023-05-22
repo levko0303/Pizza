@@ -16,59 +16,45 @@
         public bool Beef { get; set; }
         public float FinalPrice { get; set; }
         public string Details { get; set; }
-        public static float getFinale(Pizza pizza)
+        public static float getFinale(bool tomatoSauce, bool cheese, bool pepperoni, bool mushroom, bool tuna, bool pineapple, bool ham, bool beef)
         {
-            float final = 0;
-            float TomatoSauce = 2,
-            Cheese = 1,
-            Peperoni = 0.5f,
-            Mushroom = 0.3f,
-            Tuna = 12,
-            Pineapple = 9,
-            Ham = 5,
-            Beef = 1.5f;
+            float final = 2;
+            float TomatoSaucePrice = 2;
+            float CheesePrice = 1;
+            float PepperoniPrice = 0.5f;
+            float MushroomPrice = 0.3f;
+            float TunaPrice = 12;
+            float PineapplePrice = 9;
+            float HamPrice = 5;
+            float BeefPrice = 1.5f;
 
-            if (pizza == null)
-            {
-                return final;
-            }
-            else
-            {
-                if (pizza.TomatoSauce)
-                {
-                    final += TomatoSauce;
-                }
-                if (pizza.Cheese)
-                {
-                    final += Cheese;
-                }
-                if (pizza.Peperoni)
-                {
-                    final += Peperoni;
-                }
-                if (pizza.Mushroom)
-                {
-                    final += Mushroom;
-                }
-                if (pizza.Tuna)
-                {
-                    final += Tuna;
-                }
-                if (pizza.Pineapple)
-                {
-                    final += Pineapple;
-                }
-                if (pizza.Ham)
-                {
-                    final += Ham;
-                }
-                if (pizza.Beef)
-                {
-                    final += Beef;
-                }
-            }
+
+            if (tomatoSauce)
+                final += TomatoSaucePrice;
+
+            if (cheese)
+                final += CheesePrice;
+
+            if (pepperoni)
+                final += PepperoniPrice;
+
+            if (mushroom)
+                final += MushroomPrice;
+
+            if (tuna)
+                final += TunaPrice;
+
+            if (pineapple)
+                final += PineapplePrice;
+
+            if (ham)
+                final += HamPrice;
+
+            if (beef)
+                final += BeefPrice;
 
             return final;
         }
+
     }
 }

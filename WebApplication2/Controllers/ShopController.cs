@@ -79,11 +79,10 @@ namespace WebApplication2.Controllers
                 Pineapple = pineapple,
                 Ham = ham,
                 Beef = beef,
-                
                 Details = "Test",
                 ImageTitle = pizzaName,
             };
-            customPizza.FinalPrice = Pizza.getFinale(customPizza);
+            customPizza.FinalPrice = Pizza.getFinale(customPizza.TomatoSauce, customPizza.Cheese, customPizza.Peperoni, customPizza.Mushroom, customPizza.Tuna, customPizza.Pineapple, customPizza.Ham, customPizza.Beef) ;
 
             // Add the custom pizza to the database
             var curr_usr = _context.Users.FirstOrDefault(m => m.UserName == User.Identity.Name);
@@ -105,7 +104,7 @@ namespace WebApplication2.Controllers
             await Task.Delay(1500); // Wait for 2 seconds
 
             // Redirect the user back to the main pizza page
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Carts");
         }
 
     }
