@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication2.Controllers;
 using WebApplication2.Data;
@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Microsoft.Extensions.Options;
 
 
 
@@ -24,16 +25,18 @@ namespace WebApplication2.Tests.Controllers
     public class CartControllerTests
     {
         private ApplicationDbContext _context;
+
         private CartsController _cartsController;
         private HomeController _homeController;
         private MakeCustomPizza _custumcontroller;
         private OrdersController _ordersController;
         private PizzasController _controller;
         private ShopController _shopController;
+        private UserManager<User> _userManager;
+        private UsersController _usersController;
+       
 
 
-
-        private MakeCustomPizza _makeCustomPizzaController;
         [SetUp]
         public void Setup()
         {
@@ -41,14 +44,19 @@ namespace WebApplication2.Tests.Controllers
 
             // ?????????????? ????????? ???? ?????
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-             .UseInMemoryDatabase(databaseName: "TestDb")
-             .Options;
+    .UseInMemoryDatabase(databaseName: "TestDb")
+    .EnableSensitiveDataLogging()
+    .Options;
             _context = new ApplicationDbContext(options);
+
             SeedDatabase();
+
+
+           
 
             /// ????????? ?????????? CartsController ? ?????????? ?????????? ???? ?????
             _cartsController = new CartsController(_context);
-
+            
             // ????????? ?????????? OrdersController ? ?????????? ?????????? ???? ?????
             _ordersController = new OrdersController(_context);
             // ????????? ?????????? ShopController ? ?????????? ?????????? ???? ?????
@@ -56,9 +64,13 @@ namespace WebApplication2.Tests.Controllers
             var logger = new LoggerFactory().CreateLogger<HomeController>();
             _homeController = new HomeController(logger);
 
-            _makeCustomPizzaController = new MakeCustomPizza(_context);
+            _custumcontroller = new MakeCustomPizza(_context);
             _controller = new PizzasController(_context);
             _custumcontroller = new MakeCustomPizza(_context);
+            // Mock UserManager using a mocking framework like Moq
+            var userManagerMock = new Mock<UserManager<User>>(Mock.Of<IUserStore<User>>(), null, null, null, null, null, null, null, null);
+            _userManager = userManagerMock.Object;
+            _usersController = new UsersController(_userManager);
         }
 
         [TearDown]
@@ -67,6 +79,35 @@ namespace WebApplication2.Tests.Controllers
             // ????????? ??????? ???? ?????
             _context.Database.EnsureDeleted();
         }
+        
+
+
+
+
+
+        [Test]
+        public void Create_ReturnsViewResultWithCreateButton()
+        {
+            // Arrange
+            var dbContextOptions = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .Options;
+
+            using (var dbContext = new ApplicationDbContext(dbContextOptions))
+            {
+                var controller = new CartsController(dbContext);
+
+                // Act
+                var result = controller.Create() as ViewResult;
+
+                // Assert
+                Assert.NotNull(result);
+                Assert.AreEqual("Create", result.ViewName);
+            }
+        }
+
+
+
         [Test]
         public async Task DeleteConfirmed_WithValidId_DeletesOrder()
         {
@@ -99,11 +140,11 @@ namespace WebApplication2.Tests.Controllers
         {
             // Act
             var result = await _ordersController.Index() as ViewResult;
-
+           
 
             // Assert
             Assert.NotNull(result);
-
+            
         }
         [Test]
         public async Task Delete_WithInvalidId_ReturnsNotFound()
@@ -124,10 +165,11 @@ namespace WebApplication2.Tests.Controllers
         {
             // Arrange
             var pizza = new Pizza();
-            _makeCustomPizzaController.ModelState.AddModelError("PizzaName", "Invalid pizza name");
+            _custumcontroller.ModelState.AddModelError("PizzaName", "Invalid pizza name");
 
             // Act
-            var result = await _makeCustomPizzaController.Create(pizza) as ViewResult;
+            var result = await _custumcontroller.Create(pizza) as ViewResult;
+
             // Assert
             Assert.NotNull(result);
             Assert.AreEqual(pizza, result.Model);
@@ -162,7 +204,7 @@ namespace WebApplication2.Tests.Controllers
             Assert.NotNull(result);
         }
 
-
+       
 
         [Test]
         public async Task Create_WithInvalidCart_ReturnsViewWithCart()
@@ -405,6 +447,9 @@ namespace WebApplication2.Tests.Controllers
             Assert.NotNull(result);
 
         }
+
+
+
         [Test]
         public async Task Details_WithValidId_ReturnsViewResultWithCart()
         {
@@ -438,11 +483,6 @@ namespace WebApplication2.Tests.Controllers
             // Assert
             Assert.NotNull(result);
         }
-
-
-
-
-
 
         [Test]
         public async Task Edit_WithInvalidCart_ReturnsNotFound()
@@ -544,20 +584,12 @@ namespace WebApplication2.Tests.Controllers
             // Act
             var result = await _controller.Create(pizza) as ViewResult;
             var model = result?.Model as Pizza;
+
             // Assert
             Assert.NotNull(result);
             Assert.NotNull(model);
             Assert.AreEqual(pizza, model);
         }
-
-
-
-
-
-
-
-
-
 
 
         [Test]
@@ -600,20 +632,35 @@ namespace WebApplication2.Tests.Controllers
         }
 
 
+        [Test]
+        public void Index_ReturnsViewResultWithListOfUsers()
+        {
+            // Arrange
+            var users = new List<User>
+    {
+        new User { Id = "1", UserName = "user1" },
+        new User { Id = "2", UserName = "user2" },
+        new User { Id = "3", UserName = "user3" }
+    };
+            var userManagerMock = new Mock<UserManager<User>>(Mock.Of<IUserStore<User>>(), null, null, null, null, null, null, null, null);
+            userManagerMock.Setup(u => u.Users).Returns(users.AsQueryable());
+            _userManager = userManagerMock.Object;
 
+            _usersController = new UsersController(_userManager);
 
+            // Act
+            var result = _usersController.Index() as ViewResult;
+            var model = result?.Model as List<User>;
 
-
-
-
-
-
-
-
+            // Assert
+            Assert.NotNull(result);
+            Assert.NotNull(model);
+            Assert.AreEqual(users.Count, model.Count);
+        }
 
         private void SeedDatabase()
         {
-
+            
             var pizza = new Pizza
             {
                 Id = 1,

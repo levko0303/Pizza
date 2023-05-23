@@ -75,7 +75,8 @@ namespace WebApplication2.Controllers
         // GET: Carts/Create
         public IActionResult Create()
         {
-            return View();
+            ViewData["Title"] = "Create";
+            return View("Create"); // Передача назви представлення "Create"
         }
 
         // POST: Carts/Create
